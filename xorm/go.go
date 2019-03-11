@@ -192,6 +192,10 @@ func genGoImports(tables []*core.Table) map[string]string {
 func typestring(col *core.Column) string {
 	st := col.SQLType
 	t := core.SQLType2Type(st)
+	switch strings.ToUpper(st.Name) {
+	case core.Decimal, core.Numeric:
+		t = reflect.TypeOf(float64(0))
+	}
 	s := t.String()
 	if s == "[]uint8" {
 		return "[]byte"
